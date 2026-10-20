@@ -5,16 +5,16 @@ using UnityEngine.InputSystem;
 public class FarmingInteraction : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private FarmGrid farmGrid;
+    [SerializeField] private WorldGrid worldGrid;
     [SerializeField] private float targetDistance = 1.05f;
     [SerializeField] private PlayerInventory playerInventory;
 
     public void PerformAction()
     {
-        if (playerMovement == null || farmGrid == null)
+        if (playerMovement == null || worldGrid == null)
         {
             Debug.LogError(
-                "Assign PlayerMovement and FarmGrid in the Inspector."
+                "Assign PlayerMovement and worldGrid in the Inspector."
             );
             return;
         }
@@ -33,9 +33,9 @@ public class FarmingInteraction : MonoBehaviour
         Vector3 targetPosition =
             transform.position + direction * targetDistance;
 
-        if (farmGrid.WorldToGrid(targetPosition, out int x, out int z))
+        if (worldGrid.WorldToGrid(targetPosition, out int x, out int z))
         {
-            FarmCell cell = farmGrid.GetCell(x, z);
+            FarmCell cell = worldGrid.GetCell(x, z);
 
             if (cell != null)
             {

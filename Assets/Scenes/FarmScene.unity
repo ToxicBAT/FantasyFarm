@@ -267,8 +267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmingInteraction
   playerMovement: {fileID: 32461932}
-  farmGrid: {fileID: 1991822329}
-  targetDistance: 1.05
+  worldGrid: {fileID: 1991822329}
+  targetDistance: 1
   playerInventory: {fileID: 32461934}
 --- !u!114 &32461934
 MonoBehaviour:
@@ -1699,7 +1699,7 @@ GameObject:
   - component: {fileID: 1991822330}
   - component: {fileID: 1991822329}
   m_Layer: 0
-  m_Name: FarmGrid
+  m_Name: WorldGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1718,9 +1718,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmGrid
   farmCellPrefab: {fileID: 5549330970518729535, guid: 078f0e7b65be6034c8037fee8dba1717, type: 3}
-  width: 8
-  depth: 8
-  cellSize: 1.05
+  width: 16
+  depth: 16
+  cellSize: 1
 --- !u!4 &1991822330
 Transform:
   m_ObjectHideFlags: 0
