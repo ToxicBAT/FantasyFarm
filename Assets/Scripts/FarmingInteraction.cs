@@ -16,10 +16,10 @@ public class FarmingInteraction : MonoBehaviour
     private Color targetHighlightColor =
         new Color(1f, 0.75f, 0.15f, 1f);
 
-    [SerializeField] private float borderThickness = 0.025f;
-    [SerializeField] private float borderHeight = 0.025f;
-    [SerializeField] private float borderGap = 0.005f;
-    [SerializeField] private const int overlayRenderQueue = 4000;
+    [SerializeField] private float borderThickness = 0.05f;
+    [SerializeField] private float borderHeight = 0.06f;
+    [SerializeField] private float borderGap = 0.02f;
+    private const int overlayRenderQueue = 4000;
 
     public void PerformAction()
     {
@@ -105,6 +105,8 @@ public class FarmingInteraction : MonoBehaviour
         targetHighlightMaterial.SetColor(
             "_BaseColor", targetHighlightColor);
 
+        targetHighlightMaterial.renderQueue = overlayRenderQueue;
+
         targetBorders = new GameObject[4];
 
         for (int i = 0; i < 4; i++)
@@ -113,12 +115,6 @@ public class FarmingInteraction : MonoBehaviour
                 PrimitiveType.Cube);
 
             border.name = "TargetBorder_" + i;
-
-            // Remove the unnecessary physics collider.
-            Collider borderCollider = border.GetComponent<Collider>();
-
-            if (borderCollider != null)
-                Destroy(borderCollider);
 
             Renderer borderRenderer = border.GetComponent<Renderer>();
 
@@ -197,15 +193,17 @@ public class FarmingInteraction : MonoBehaviour
             center + new Vector3(0f, 0f, -half),
             new Vector3(worldGrid.CellSize, borderHeight, borderThickness));
 
+        float sideLength = worldGrid.CellSize - 2f * borderThickness;
+
         // East edge (+X)
         PositionBorder(2,
             center + new Vector3(half, 0f, 0f),
-            new Vector3(borderThickness, borderHeight, worldGrid.CellSize));
+            new Vector3(borderThickness, borderHeight, sideLength));
 
         // West edge (-X)
         PositionBorder(3,
             center + new Vector3(-half, 0f, 0f),
-            new Vector3(borderThickness, borderHeight, worldGrid.CellSize));
+            new Vector3(borderThickness, borderHeight, sideLength));
     }
 
     private void PositionBorder(

@@ -270,6 +270,10 @@ MonoBehaviour:
   worldGrid: {fileID: 1991822329}
   targetDistance: 1
   playerInventory: {fileID: 32461934}
+  targetHighlightColor: {r: 1, g: 0.75, b: 0.15, a: 1}
+  borderThickness: 0.05
+  borderHeight: 0.06
+  borderGap: 0.02
 --- !u!114 &32461934
 MonoBehaviour:
   m_ObjectHideFlags: 0
