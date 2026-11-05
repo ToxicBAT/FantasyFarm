@@ -19,9 +19,17 @@ public class FarmingInteraction : MonoBehaviour
     [SerializeField] private float borderGap = 0.02f;
 
     private TargetCellHighlight targetHighlight;
+    private FarmTargeting farmTargeting;
 
     private void Awake()
     {
+        farmTargeting = new FarmTargeting(
+            playerMovement,
+            worldGrid,
+            transform,
+            targetDistance
+        );
+
         targetHighlight = new TargetCellHighlight(
             targetHighlightColor,
             borderThickness,
@@ -40,8 +48,11 @@ public class FarmingInteraction : MonoBehaviour
             return;
         }
 
-        if (!TryGetTargetCell(out FarmCell cell, out _, out _))
+        if (!farmTargeting.TryGetTargetCell(
+            out FarmCell cell, out _, out _))
+        {
             return;
+        }
 
         if (!cell.IsTilled)
         {
@@ -77,34 +88,6 @@ public class FarmingInteraction : MonoBehaviour
         }
     }
 
-    private bool TryGetTargetCell(
-        out FarmCell cell,
-        out int x,
-        out int z)
-    {
-        cell = null;
-        x = 0;
-        z = 0;
-
-        Vector3 direction = playerMovement.FacingDirection;
-        direction.y = 0f;
-
-        if (direction.sqrMagnitude < 0.001f)
-            return false;
-
-        direction.Normalize();
-
-        Vector3 targetPosition =
-            transform.position + direction * targetDistance;
-
-        if (!worldGrid.WorldToGrid(targetPosition, out x, out z))
-            return false;
-
-        cell = worldGrid.GetCell(x, z);
-
-        return cell != null;
-    }
-
     private void UpdateTargetHighlight()
     {
         if (playerMovement == null || worldGrid == null ||
@@ -114,7 +97,8 @@ public class FarmingInteraction : MonoBehaviour
             return;
         }
 
-        if (TryGetTargetCell(out FarmCell cell, out int x, out int z))
+        if (farmTargeting.TryGetTargetCell(
+            out FarmCell cell, out int x, out int z))
         {
             targetHighlight.Show(cell, worldGrid, x, z);
         }
