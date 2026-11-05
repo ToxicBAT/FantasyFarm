@@ -20,6 +20,7 @@ public class FarmingInteraction : MonoBehaviour
 
     private TargetCellHighlight targetHighlight;
     private FarmTargeting farmTargeting;
+    private FarmingActionHandler actionHandler;
 
     private void Awake()
     {
@@ -36,6 +37,8 @@ public class FarmingInteraction : MonoBehaviour
             borderHeight,
             borderGap
         );
+
+        actionHandler = new FarmingActionHandler(playerInventory);
     }
 
     public void PerformAction()
@@ -54,38 +57,7 @@ public class FarmingInteraction : MonoBehaviour
             return;
         }
 
-        if (!cell.IsTilled)
-        {
-            cell.Till();
-            Debug.Log("Soil tilled.");
-        }
-        else if (!cell.HasCrop)
-        {
-            cell.Plant();
-            Debug.Log("Seed planted.");
-        }
-        else if (cell.GrowthStage >= 2)
-        {
-            if (cell.Harvest())
-            {
-                if (playerInventory != null)
-                {
-                    playerInventory.AddCrops(1);
-                }
-                else
-                {
-                    Debug.LogError(
-                        "PlayerInventory is not assigned in the Inspector."
-                    );
-                }
-
-                Debug.Log("Harvest successful!");
-            }
-        }
-        else
-        {
-            Debug.Log("Crop is still growing.");
-        }
+        actionHandler.PerformAction(cell);
     }
 
     private void UpdateTargetHighlight()
