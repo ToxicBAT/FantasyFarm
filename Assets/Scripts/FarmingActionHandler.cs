@@ -10,37 +10,43 @@ public class FarmingActionHandler
         this.playerInventory = playerInventory;
     }
 
-    public void PerformAction(FarmCell cell)
+    public void PerformAction(CropPlot plot)
     {
-        if (cell == null)
+        if (plot == null)
+        {
+            Debug.Log("There is no crop plot at the targeted cell.");
             return;
+        }
 
-        if (!cell.IsTilled)
+        if (!plot.IsTilled)
         {
-            cell.Till();
-            Debug.Log("Soil tilled.");
+            if (plot.Till())
+                Debug.Log("Soil tilled.");
+            else
+                Debug.Log("Unable to till this plot.");
         }
-        else if (!cell.HasCrop)
+        else if (!plot.HasCrop)
         {
-            cell.Plant();
-            Debug.Log("Seed planted.");
+            if (plot.Plant())
+                Debug.Log("Seed planted.");
+            else
+                Debug.Log("Unable to plant on this plot.");
         }
-        else if (cell.GrowthStage >= 2)
+        else if (plot.GrowthStage >= 2)
         {
-            if (cell.Harvest())
+            if (!plot.Harvest())
+                return;
+
+            if (playerInventory != null)
             {
-                if (playerInventory != null)
-                {
-                    playerInventory.AddCrops(1);
-                }
-                else
-                {
-                    Debug.LogError(
-                        "PlayerInventory is not assigned in the Inspector."
-                    );
-                }
-
+                playerInventory.AddCrops(1);
                 Debug.Log("Harvest successful!");
+            }
+            else
+            {
+                Debug.LogError(
+                    "PlayerInventory is not assigned in the Inspector."
+                );
             }
         }
         else
@@ -49,4 +55,3 @@ public class FarmingActionHandler
         }
     }
 }
-

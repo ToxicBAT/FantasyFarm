@@ -57,7 +57,9 @@ public class FarmingInteraction : MonoBehaviour
             return;
         }
 
-        actionHandler.PerformAction(cell);
+        CropPlot cropPlot = cell.OccupyingCropPlot;
+
+        actionHandler.PerformAction(cropPlot);
     }
 
     private void UpdateTargetHighlight()
