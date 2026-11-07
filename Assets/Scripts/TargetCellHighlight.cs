@@ -47,6 +47,13 @@ public class TargetCellHighlight
 
             border.name = "TargetBorder_" + i;
 
+            Collider borderCollider = border.GetComponent<Collider>();
+
+            if (borderCollider != null)
+            {
+                Object.Destroy(borderCollider);
+            }
+
             Renderer borderRenderer =
                 border.GetComponent<Renderer>();
 
@@ -78,8 +85,7 @@ public class TargetCellHighlight
             return;
         }
 
-        Renderer cellRenderer =
-            targetCell.GetComponentInChildren<Renderer>();
+        Renderer cellRenderer = targetCell.CellRenderer;
 
         if (cellRenderer == null)
         {

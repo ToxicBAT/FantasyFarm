@@ -22,6 +22,8 @@ public class FarmCell : MonoBehaviour
     public bool HasCrop { get; private set; }
     public int GrowthStage { get; private set; }
 
+    public Renderer CellRenderer => cellRenderer;
+
     private GameObject cropVisual;
     private float growthTimer;
 
@@ -30,7 +32,92 @@ public class FarmCell : MonoBehaviour
         if (cellRenderer == null)
             cellRenderer = GetComponent<Renderer>();
 
+        ValidateConfiguration();
+
         RefreshSoilAppearance();
+    }
+
+    private void ValidateConfiguration()
+    {
+        bool configurationValid = true;
+
+        if (cellRenderer == null)
+        {
+            Debug.LogError(
+                "FarmCell: No Renderer found.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (untilledMaterial == null)
+        {
+            Debug.LogError(
+                "FarmCell: Until­led material is not assigned.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (tilledMaterial == null)
+        {
+            Debug.LogError(
+                "FarmCell: Tilled material is not assigned.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (seedlingPrefab == null)
+        {
+            Debug.LogError(
+                "FarmCell: Seedling prefab is not assigned.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (smallPlantPrefab == null)
+        {
+            Debug.LogError(
+                "FarmCell: Small plant prefab is not assigned.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (matureCropPrefab == null)
+        {
+            Debug.LogError(
+                "FarmCell: Mature crop prefab is not assigned.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (stageDuration <= 0f)
+        {
+            Debug.LogError(
+                "FarmCell: Stage duration must be greater than zero.",
+                this
+            );
+
+            configurationValid = false;
+        }
+
+        if (!configurationValid)
+        {
+            Debug.LogError(
+                "FarmCell: Configuration is invalid. Check the Inspector.",
+                this
+            );
+        }
     }
 
     public void Till()
