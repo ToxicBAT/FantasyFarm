@@ -36,13 +36,18 @@ public class WorldGrid : MonoBehaviour
         {
             for (int z = 0; z < depth; z++)
             {
-                Vector3 position = transform.position
-                    + new Vector3(x * cellSize, 0f, z * cellSize);
+                Vector3 localPosition = new(
+                    x * cellSize,
+                    0f,
+                    z * cellSize
+                );
+
+                Vector3 position = transform.TransformPoint(localPosition);
 
                 GameObject instance = Instantiate(
                     farmCellPrefab,
                     position,
-                    Quaternion.identity,
+                    transform.rotation,
                     transform
                 );
 
@@ -88,7 +93,7 @@ public class WorldGrid : MonoBehaviour
 
     public bool WorldToGrid(Vector3 worldPosition, out int x, out int z)
     {
-        Vector3 local = worldPosition - transform.position;
+        Vector3 local = transform.InverseTransformPoint(worldPosition);
 
         x = Mathf.RoundToInt(local.x / cellSize);
         z = Mathf.RoundToInt(local.z / cellSize);
@@ -106,7 +111,12 @@ public class WorldGrid : MonoBehaviour
             );
         }
 
-        return transform.position
-            + new Vector3(x * cellSize, 0f, z * cellSize);
+        Vector3 localPosition = new Vector3(
+            x * cellSize,
+            0f,
+            z * cellSize
+        );
+
+        return transform.TransformPoint(localPosition);
     }
 }

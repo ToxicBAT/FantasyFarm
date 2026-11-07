@@ -103,22 +103,29 @@ public class TargetCellHighlight
         center.y = y;
 
         // North edge (+Z)
+        // Get the grid's world-space directions.
+        Vector3 gridRight = worldGrid.transform.right;
+        Vector3 gridForward = worldGrid.transform.forward;
+
+        // North edge (+Z)
         PositionBorder(
             0,
-            center + new Vector3(0f, 0f, half),
+            center + gridForward * half,
             new Vector3(
                 worldGrid.CellSize,
                 borderHeight,
-                borderThickness));
+                borderThickness),
+            worldGrid.transform.rotation);
 
         // South edge (-Z)
         PositionBorder(
             1,
-            center + new Vector3(0f, 0f, -half),
+            center - gridForward * half,
             new Vector3(
                 worldGrid.CellSize,
                 borderHeight,
-                borderThickness));
+                borderThickness),
+            worldGrid.transform.rotation);
 
         float sideLength =
             worldGrid.CellSize - 2f * borderThickness;
@@ -126,32 +133,35 @@ public class TargetCellHighlight
         // East edge (+X)
         PositionBorder(
             2,
-            center + new Vector3(half, 0f, 0f),
+            center + gridRight * half,
             new Vector3(
                 borderThickness,
                 borderHeight,
-                sideLength));
+                sideLength),
+            worldGrid.transform.rotation);
 
         // West edge (-X)
         PositionBorder(
             3,
-            center + new Vector3(-half, 0f, 0f),
+            center - gridRight * half,
             new Vector3(
                 borderThickness,
                 borderHeight,
-                sideLength));
+                sideLength),
+            worldGrid.transform.rotation);
     }
 
     private void PositionBorder(
-        int index,
-        Vector3 position,
-        Vector3 scale)
+    int index,
+    Vector3 position,
+    Vector3 scale,
+    Quaternion rotation)
     {
         GameObject border = targetBorders[index];
 
         border.transform.SetPositionAndRotation(
             position,
-            Quaternion.identity);
+            rotation);
 
         border.transform.localScale = scale;
 
