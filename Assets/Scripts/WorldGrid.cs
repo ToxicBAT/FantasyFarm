@@ -10,6 +10,9 @@ public class WorldGrid : MonoBehaviour
 
     private FarmCell[,] cells;
     private GridCellData[,] cellData;
+    private bool isInitialized;
+
+    public bool IsInitialized => isInitialized;
 
     public int Width => width;
     public int Depth => depth;
@@ -17,6 +20,8 @@ public class WorldGrid : MonoBehaviour
 
     private void Start()
     {
+        isInitialized = false;
+
         if (farmCellPrefab == null)
         {
             Debug.LogError("WorldGrid: Farm cell prefab is not assigned.", this);
@@ -31,6 +36,8 @@ public class WorldGrid : MonoBehaviour
 
         cells = new FarmCell[width, depth];
         cellData = new GridCellData[width, depth];
+
+        bool initializationSuccessful = true;
 
         for (int x = 0; x < width; x++)
         {
@@ -61,12 +68,26 @@ public class WorldGrid : MonoBehaviour
                     );
 
                     Destroy(instance);
+                    initializationSuccessful = false;
                     continue;
                 }
 
                 cells[x, z] = farmCell;
                 cellData[x, z] = new GridCellData(x, z);
             }
+        }
+
+        if (initializationSuccessful)
+        {
+            isInitialized = true;
+            Debug.Log("WorldGrid: Initialization completed successfully.", this);
+        }
+        else
+        {
+            Debug.LogError(
+                "WorldGrid: Initialization failed. Some cells are missing.",
+                this
+            );
         }
     }
 
