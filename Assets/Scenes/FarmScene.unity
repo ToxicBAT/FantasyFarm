@@ -302,9 +302,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConstructPlacementTester
   playerMovement: {fileID: 32461932}
   worldGrid: {fileID: 1991822329}
-  constructPrefab: {fileID: 6272277331359802749, guid: 98b7a8062ed50f540a49bd1780c0b7ba, type: 3}
+  constructPrefab: {fileID: 6813492314442187711, guid: 33fe780831793b64280107b9576baa16, type: 3}
   targetDistance: 1
   verticalOffset: 0.1
+  footprintWidth: 1
+  footprintDepth: 1
+  rotationDegrees: 0
 --- !u!1 &205544530
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,8 +13,14 @@ public class ConstructPlacementTester : MonoBehaviour
     [SerializeField] private float targetDistance = 1f;
     [SerializeField] private float verticalOffset = 0.1f;
 
+    [Header("Footprint")]
+    [SerializeField] private int footprintWidth = 2;
+    [SerializeField] private int footprintDepth = 2;
+    [SerializeField] private int rotationDegrees = 0;
+
     private FarmTargeting farmTargeting;
     private ConstructPlacement constructPlacement;
+    private ConstructFootprint footprint;
 
     private void Awake()
     {
@@ -26,6 +32,7 @@ public class ConstructPlacementTester : MonoBehaviour
         );
 
         constructPlacement = new ConstructPlacement(worldGrid);
+
     }
 
     private void Update()
@@ -58,18 +65,20 @@ public class ConstructPlacementTester : MonoBehaviour
             return;
         }
 
-        Vector3 position = worldGrid.GridToWorld(x, z)
-            + worldGrid.transform.up * verticalOffset;
+        Vector2Int anchor = new(x, z);
 
-        Quaternion rotation = worldGrid.transform.rotation;
+        footprint = new ConstructFootprint(
+            footprintWidth,
+            footprintDepth
+        );
 
         constructPlacement.TryPlace(
             constructPrefab,
-            targetCell,
-            position,
-            rotation,
+            footprint,
+            anchor,
+            rotationDegrees,
+            verticalOffset,
             out _
         );
     }
 }
-
